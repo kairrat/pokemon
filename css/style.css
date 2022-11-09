@@ -1,0 +1,134 @@
+* {
+    box-sizing: border-box;
+    padding: 0 ;
+    margin: 0 ;
+    font-family: 'Tajawal', sans-serif;
+
+}
+img {
+    border: none;
+}
+.wrapper    {
+    width: 100%;
+    min-height: 100vh;
+    background-color: #0b0c10;
+
+}
+.container  {
+    max-width: 1440px;
+    width: 100%;
+    min-height: 100vh;
+    margin: 0 auto;
+}
+
+.header {
+    font-size: 1.7rem;
+    height: 10%;
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    padding: 2% 5%;
+
+}
+a   {
+    text-decoration: none;
+    color: #66fcf1;
+
+
+}
+.bucket {
+    color: #66fcf1;
+    transition: 0.3s;
+    cursor: pointer;
+}
+.bucket_img img {
+    width: 13px;
+    height: 13px;
+    color: #66fcf1;
+
+}
+
+
+.search_container   {
+    display: flex;
+    margin: 2rem auto;
+    justify-content: center;
+
+}
+.search {
+    max-width: 500px;
+    width: 100%;
+    height: 50px;
+    border: none;
+    outline: none;
+    border-radius: 25px;
+    padding: 1% 2%;
+    font-size: 1rem;
+
+}
+.btn_submit {
+    margin-left: -48px;
+    border-radius: 25px;
+    cursor: pointer;
+
+    height:3rem;
+    width: 3rem;
+    background-color: #66fcf1;
+    border: none;
+  
+}
+.btn_submit:hover   {
+    cursor: pointer;
+
+}
+
+.pokemon_container  {
+    display: flex;
+    margin: 0 auto;
+    justify-content: center;
+    width: 70%;
+    min-height: 100vh;
+    background-color: #66fcf1;
+    border-radius: 50px;
+    flex-wrap: wrap;
+
+}
+
+.pokemon_block  {
+    display: flex;
+    justify-content: space-around;
+    flex-direction: column;
+    margin: 40px 40px;
+    border-radius: 50px;
+    width: 20rem;
+    height: 20rem;
+    background-color: rgb(255, 255, 255);
+}
+
+.pokemon_img    {
+   background-position: top;
+  width: 15rem;
+  height: 15rem;
+   margin:  10px auto;
+   display: flex;
+   border: none;
+   outline: none;
+   border-radius: 50px;
+}
+
+
+.pokemon_name   {
+
+        font-size: 1.8rem;
+}
+.bottom_block   {
+    display: flex;
+    justify-content: space-between;
+    padding: 1rem 2rem;
+}
+
+.bucket_img {
+    width: 25px;
+    height: 25px;
+    cursor: pointer;
+}
