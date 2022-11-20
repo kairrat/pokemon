@@ -10,9 +10,19 @@ myInput.addEventListener('keypress', (event) => {
       document.querySelector('.btn_submit').click();
 
 }})
+let container = document.querySelector('.pokemon_container')
+let bucket = document.querySelector('.bucket');
+
 
 let items = [];
-let jsContainer = document.querySelector('.pokemon_container');
+if(localStorage.getItem('items')){
+    items =  JSON.parse(localStorage.getItem('items'));
+     
+ };
+bucket.addEventListener('click', () => {
+    container.innerHTML = '';
+    displayPokemon();
+})
 
 async  function sendRequest(){
     let input = document.querySelector('.search').value.toLowerCase();
@@ -31,8 +41,8 @@ async  function sendRequest(){
 }
  function getRequest(result) {
 
-
-
+    
+      
 
     let container = document.querySelector('.pokemon_container')
     let block = document.createElement('div');
@@ -72,25 +82,49 @@ async  function sendRequest(){
     bottomBucket.appendChild(bottomBucketImg);
 
 
-    let item = {
-        container : container,
-        block : block,
-        img : img,
-        pokemonName: pokemonName,
-        bottomBlock : bottomBlock,
-        bottomBucket : bottomBucket,
-        bottomBucketImg : bottomBucketImg
-    }
-    items.push(item);
-    console.log(items);
+
+  
+ 
 
     bottomBucketImg.addEventListener('click', () => {
         
-     
-            bottomBucketImg.src =  "css/img/fav_black.png"
+        let item  = {
+            name : result.name,
+            img : result.sprites.other.dream_world.front_default,
+            id : result.id
+        }
+        items.push(item);
+        localStorage.setItem('items',JSON.stringify(items));
+        bottomBucketImg.src = "css/img/fav_black.png";
+
 
     })
+
+
  }
+ const displayPokemon = () => {
+    if(items.length == 0) {
+        container.innerHTML = '';
+    }
 
+    let pokemonHTMLString = items
+    .map((poke) => {
+      return `
+      <div class="pokemon_block">
+      <img class="pokemon_img" src="${poke.img}" />
+      <div class="bottom_block">
+      <h1 class="pokemon_name">${poke.name}</h1>
+      <div class="bottom_bucket">
+          <img src="css/img/fav_black.png" alt="" class="bucket">
+      </div>
 
+  </div> 
+
+  </div>
+    `;
+    })
+    .join(" ");
+    container.innerHTML = pokemonHTMLString;
+
+    };
 
