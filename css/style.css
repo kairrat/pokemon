@@ -71,7 +71,7 @@ a   {
     border-radius: 25px;
     cursor: pointer;
 
-    height:3rem;
+    height:3.1rem;
     width: 3rem;
     background-color: #66fcf1;
     border: none;
@@ -124,11 +124,15 @@ a   {
 .bottom_block   {
     display: flex;
     justify-content: space-between;
-    padding: 1rem 2rem;
+    padding: 0.2rem 2rem;
 }
 
 .bucket_img {
     width: 25px;
     height: 25px;
     cursor: pointer;
+}
+
+.poke_id    {
+    margin: 0 auto;
 }

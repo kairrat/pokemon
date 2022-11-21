@@ -21,7 +21,23 @@ if(localStorage.getItem('items')){
  };
 bucket.addEventListener('click', () => {
     container.innerHTML = '';
+    container.style.background  = "#ea0008";
+    document.querySelector('.logo_name').textContent = 'Favorites';
+    document.querySelector('.logo_name').style.color = '#ea0008';
+    document.querySelector('.btn_submit').style.background = "#ea0008";
     displayPokemon();
+})
+
+document.querySelector('.logo_name').addEventListener('click', () => {
+
+    container.innerHTML = '';
+    container.style.background  = "#66fcf1";
+    document.querySelector('.logo_name').textContent = 'Pokemon API';
+    document.querySelector('.logo_name').style.color = '#66fcf1';
+    document.querySelector('.btn_submit').style.background = "#66fcf1";
+
+
+
 })
 
 async  function sendRequest(){
@@ -52,6 +68,15 @@ async  function sendRequest(){
     img.src = result.sprites.other.dream_world.front_default;
     img.style.backgroundPosition = "top";
     
+    let id_block     = document.createElement('div');
+    id_block.classList.add('poke_id')
+
+    id_item = document.createElement('h2');
+    id_item.classList.add('poke_id_item')
+    id_block.appendChild(id_item);
+    id_block.innerHTML =    ` <h2 class="poke_id_item" id="${result.id}"> ID: ${result.id}</h2>`
+
+
 
 
     let bottomBlock = document.createElement('div')
@@ -76,7 +101,7 @@ async  function sendRequest(){
     container.appendChild(block);
     block.appendChild(img);
     block.appendChild(bottomBlock);
-  
+    block.appendChild(id_block)
     bottomBlock.appendChild(pokemonName);
     bottomBlock.appendChild(bottomBucket);
     bottomBucket.appendChild(bottomBucketImg);
@@ -112,19 +137,41 @@ async  function sendRequest(){
       return `
       <div class="pokemon_block">
       <img class="pokemon_img" src="${poke.img}" />
+    
       <div class="bottom_block">
       <h1 class="pokemon_name">${poke.name}</h1>
       <div class="bottom_bucket">
           <img src="css/img/fav_black.png" alt="" class="bucket">
       </div>
-
+  
   </div> 
+  <div class="poke_id">
+  <h2 class='poke_id_item' id="${poke.id}"> ID: ${poke.id}</h2>
+</div>
 
   </div>
     `;
     })
     .join(" ");
+
+    
+
+
+
+
     container.innerHTML = pokemonHTMLString;
 
     };
 
+
+    document.addEventListener('click',function(e){
+        e.preventDefault();
+        if(e.target.classList == 'bucket'){
+            items.forEach(function(item,i,id) {
+                items.splice(id,1);
+                console.log(items)
+            })
+            displayPokemon();
+            localStorage.setItem('items',JSON.stringify(items))
+         }
+     });
