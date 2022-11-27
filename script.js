@@ -12,6 +12,7 @@ myInput.addEventListener('keypress', (event) => {
 }})
 let container = document.querySelector('.pokemon_container')
 let bucket = document.querySelector('.bucket');
+let header  = document.querySelector('.logo');
 
 
 let items = [];
@@ -22,9 +23,12 @@ if(localStorage.getItem('items')){
 bucket.addEventListener('click', () => {
     container.innerHTML = '';
     container.style.background  = "#ea0008";
-    document.querySelector('.logo_name').textContent = 'Favorites';
+    document.querySelector('.logo_name').textContent = 'Pokemon API';
     document.querySelector('.logo_name').style.color = '#ea0008';
     document.querySelector('.btn_submit').style.background = "#ea0008";
+    bucket.style.color = '#ea0008';
+    document.querySelector('.search_container').style.display = 'none';
+
     displayPokemon();
 })
 
@@ -32,9 +36,16 @@ document.querySelector('.logo_name').addEventListener('click', () => {
 
     container.innerHTML = '';
     container.style.background  = "#66fcf1";
+
+    
+    
     document.querySelector('.logo_name').textContent = 'Pokemon API';
     document.querySelector('.logo_name').style.color = '#66fcf1';
     document.querySelector('.btn_submit').style.background = "#66fcf1";
+    bucket.style.color = '#66fcf1';
+
+    document.querySelector('.search_container').style.display = 'flex';
+
 
 
 
@@ -57,91 +68,75 @@ async  function sendRequest(){
 }
  function getRequest(result) {
 
-    
-      
+    let promises = [];
+    promises.push(result);
 
-    let container = document.querySelector('.pokemon_container')
-    let block = document.createElement('div');
-    block.classList.add('pokemon_block');
-    let img = document.createElement('img');
-    img.classList.add('pokemon_img');
-    img.src = result.sprites.other.dream_world.front_default;
-    img.style.backgroundPosition = "top";
-    
-    let id_block     = document.createElement('div');
-    id_block.classList.add('poke_id')
-
-    id_item = document.createElement('h2');
-    id_item.classList.add('poke_id_item')
-    id_block.appendChild(id_item);
-    id_block.innerHTML =    ` <h2 class="poke_id_item" id="${result.id}"> ID: ${result.id}</h2>`
-
-
-
-
-    let bottomBlock = document.createElement('div')
-    bottomBlock.classList.add('bottom_block');
-
-    let bottomBucket = document.createElement('div');
-    bottomBucket.classList.add('bottom_bucket');
-
-    let bottomBucketImg = document.createElement('img');
-    bottomBucketImg.classList.add('.bucket_img')
-    bottomBucketImg.src = "css/img/fav_white.png";
-    
-    let pokemonName = document.createElement('h')
-    pokemonName.classList.add('pokemon_name');
-    pokemonName.textContent = `${result.species.name}`;
-
- 
-
-
-    
-
-    container.appendChild(block);
-    block.appendChild(img);
-    block.appendChild(bottomBlock);
-    block.appendChild(id_block)
-    bottomBlock.appendChild(pokemonName);
-    bottomBlock.appendChild(bottomBucket);
-    bottomBucket.appendChild(bottomBucketImg);
-
-
-
+    let pokes = promises
+    .map((poke) => {
+      return `
+      <div class="pokemon_block">
+      <img class="pokemon_img" src="${poke.sprites.front_default}" />
+      <div class="bottom_block">
+      <h1 class="pokemon_name">${poke.name}</h1>
+      <div class="bottom_bucket">
+          <img src="css/img/fav_white.png" alt="" class="bottom_bucket_img">
+      </div>
   
- 
+  </div> 
+  <div class="poke_id">
+  <h2 class='poke_id_item' id="${poke.id}"> ID: ${poke.id}</h2>
+</div>
 
-    bottomBucketImg.addEventListener('click', () => {
-        
-        let item  = {
+  </div>
+    `
+
+    ;
+    })
+    .join(" ");
+
+
+    
+    container.innerHTML = pokes;
+    document.addEventListener('click',function(e){
+      e.preventDefault();
+      if(e.target.classList == 'bottom_bucket_img'){
+         
+          let item  = {
             name : result.name,
-            img : result.sprites.other.dream_world.front_default,
+            img : result.sprites.front_default,
             id : result.id
         }
+
         items.push(item);
-        localStorage.setItem('items',JSON.stringify(items));
-        bottomBucketImg.src = "css/img/fav_black.png";
+        
 
+        let unique = Array.from(new Set(items.map(item => JSON.stringify(item)))).map(item => JSON.parse(item));
+        e.target.src = "css/img/fav_black.png";
+        localStorage.setItem('items',JSON.stringify(unique));
 
-    })
+       }
 
+   });
 
  }
  const displayPokemon = () => {
+  let unique = Array.from(new Set(items.map(item => JSON.stringify(item)))).map(item => JSON.parse(item));
+
     if(items.length == 0) {
         container.innerHTML = '';
     }
 
-    let pokemonHTMLString = items
+    let pokemonHTMLString = unique
     .map((poke) => {
       return `
+
       <div class="pokemon_block">
       <img class="pokemon_img" src="${poke.img}" />
     
       <div class="bottom_block">
       <h1 class="pokemon_name">${poke.name}</h1>
       <div class="bottom_bucket">
-          <img src="css/img/fav_black.png" alt="" class="bucket">
+          <img src="css/img/fav_black.png" alt="" class="bottom_bucket_black_img">
       </div>
   
   </div> 
@@ -154,24 +149,26 @@ async  function sendRequest(){
     })
     .join(" ");
 
-    
-
-
-
-
     container.innerHTML = pokemonHTMLString;
-
     };
 
 
+
+
+
     document.addEventListener('click',function(e){
-        e.preventDefault();
-        if(e.target.classList == 'bucket'){
-            items.forEach(function(item,i,id) {
-                items.splice(id,1);
-                console.log(items)
-            })
-            displayPokemon();
-            localStorage.setItem('items',JSON.stringify(items))
-         }
-     });
+      e.preventDefault();
+      let unique = Array.from(new Set(items.map(item => JSON.stringify(item)))).map(item => JSON.parse(item));
+
+      if(e.target.classList == 'bottom_bucket_black_img'){
+        let index = unique.indexOf(1);
+      unique.splice(index,1);
+      displayPokemon();
+
+        localStorage.setItem('items',JSON.stringify(unique))
+        if(unique.length == 0) {
+          container.innerHTML = '';
+      } 
+       }
+
+   });
