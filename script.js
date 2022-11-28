@@ -75,7 +75,7 @@ async  function sendRequest(){
     .map((poke) => {
       return `
       <div class="pokemon_block">
-      <img class="pokemon_img" src="${poke.sprites.front_default}" />
+      <img class="pokemon_img" src="${poke.sprites.other['official-artwork'].front_default}" />
       <div class="bottom_block">
       <h1 class="pokemon_name">${poke.name}</h1>
       <div class="bottom_bucket">
@@ -103,7 +103,7 @@ async  function sendRequest(){
          
           let item  = {
             name : result.name,
-            img : result.sprites.front_default,
+            img : result.sprites.other['official-artwork'].front_default,
             id : result.id
         }
 
