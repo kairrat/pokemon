@@ -159,13 +159,22 @@ async  function sendRequest(){
     document.addEventListener('click',function(e){
       e.preventDefault();
       let unique = Array.from(new Set(items.map(item => JSON.stringify(item)))).map(item => JSON.parse(item));
-
       if(e.target.classList == 'bottom_bucket_black_img'){
-        let index = unique.indexOf(1);
-      unique.splice(index,1);
-      displayPokemon();
+        for(let i = 0;i < unique.length;i++){
+          let id = unique[i].id;
+          let lol = JSON.parse(localStorage.getItem("items"));
+          let movieItem = lol.find((el) => {
+              return el.id === Number(id);
+            });
+              let movie = lol.filter((el) => {
+                          return el.id != Number(id) });
+                          localStorage.setItem('items',JSON.stringify(movie))
+  
+                          e.target.parentNode.parentNode.parentNode.remove();
+                          
+                          
+        }
 
-        localStorage.setItem('items',JSON.stringify(unique))
         if(unique.length == 0) {
           container.innerHTML = '';
       } 
